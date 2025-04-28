@@ -7,11 +7,11 @@ module register_file_tb;
     reg [4:0] rd;
     reg [31:0] write_data;
     reg reg_write;
-    
+
     // Outputs
     wire [31:0] read_data1;
     wire [31:0] read_data2;
-    
+
     // Instantiate the Register File
     register_file uut (
         .clk(clk),
@@ -24,10 +24,10 @@ module register_file_tb;
         .read_data1(read_data1),
         .read_data2(read_data2)
     );
-    
+
     // Clock generation
     always #5 clk = ~clk;
-    
+
     // Test vectors
     initial begin
         // Initialize inputs
@@ -38,11 +38,15 @@ module register_file_tb;
         rd = 0;
         write_data = 0;
         reg_write = 0;
-        
+
+        // Generate VCD file for waveform viewing
+        $dumpfile("register_file_tb.vcd");
+        $dumpvars(0, register_file_tb);
+
         // Apply reset
         #10;
         reset = 0;
-        
+
         // Test writing to register 1
         #10;
         rd = 5'd1;
@@ -50,13 +54,13 @@ module register_file_tb;
         reg_write = 1;
         #10;
         reg_write = 0;
-        
+
         // Test reading from register 1
         rs1 = 5'd1;
         #10;
         if (read_data1 !== 32'd100) $display("Register read test failed: reg[%d] = %d", rs1, read_data1);
         else $display("Register read test passed: reg[%d] = %d", rs1, read_data1);
-        
+
         // Test writing to register 2
         #10;
         rd = 5'd2;
@@ -64,13 +68,13 @@ module register_file_tb;
         reg_write = 1;
         #10;
         reg_write = 0;
-        
+
         // Test reading from register 2
         rs2 = 5'd2;
         #10;
         if (read_data2 !== 32'd200) $display("Register read test failed: reg[%d] = %d", rs2, read_data2);
         else $display("Register read test passed: reg[%d] = %d", rs2, read_data2);
-        
+
         // Test writing to register 0 (should remain 0)
         #10;
         rd = 5'd0;
@@ -78,14 +82,15 @@ module register_file_tb;
         reg_write = 1;
         #10;
         reg_write = 0;
-        
+
         // Test reading from register 0
         rs1 = 5'd0;
         #10;
         if (read_data1 !== 32'd0) $display("Register x0 test failed: reg[0] = %d", read_data1);
         else $display("Register x0 test passed: reg[0] = %d", read_data1);
-        
+
         $display("Register file tests completed");
+        $display("To view waveforms, run: gtkwave register_file_tb.vcd");
         $finish;
     end
 endmodule
