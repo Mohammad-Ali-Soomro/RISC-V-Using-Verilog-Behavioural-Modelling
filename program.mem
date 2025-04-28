@@ -1,0 +1,27 @@
+// Sample RISC-V program
+// Format: 32-bit instruction per line in hexadecimal
+
+// ADDI x1, x0, 10    # x1 = 10
+00A00093
+// ADDI x2, x0, 20    # x2 = 20
+01400113
+// ADD x3, x1, x2     # x3 = x1 + x2 = 30
+002081B3
+// SUB x4, x3, x1     # x4 = x3 - x1 = 20
+40118233
+// MUL x5, x1, x2     # x5 = x1 * x2 = 200
+022082B3
+// SW x3, 0(x0)       # Store x3 to memory address 0
+00302023
+// LW x6, 0(x0)       # Load from memory address 0 to x6
+00002303
+// BEQ x1, x2, 8      # Branch if x1 == x2 (not taken)
+00208463
+// ADDI x7, x0, 1     # x7 = 1
+00100393
+// BEQ x4, x2, 8      # Branch if x4 == x2 (taken)
+00220463
+// ADDI x7, x0, 2     # x7 = 2 (skipped due to branch)
+00200393
+// End of program
+00000000
